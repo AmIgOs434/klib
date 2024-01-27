@@ -91,13 +91,9 @@ class deviceController {
 
 
     async createKategorii(req, res) {
-        const {svg,title,description} = req.body
-        
-            const {svg1} = req.files
-            let fileName = uuid.v4() + ".svg"
-            svg1.mv(path.resolve(__dirname, '..', 'static', fileName))
+
     
-        const basketDevice = await Kategorii.create({svg:fileName,title,description})
+        const basketDevice = await Kategorii.create({})
         return res.json(basketDevice)
     }
     async delKategorii(req, res) {
@@ -171,7 +167,31 @@ class deviceController {
         return res.json(kategorii)
     }
 
+    async putUslugiprice1 (req, res) {
 
+        const basket =  await Uslugi_price.update(
+        {
+            name:req.body.name,
+            price:req.body.price,
+        },
+        {
+            where :{id:req.body.id}
+        }
+        )
+        if (basket) {
+            return res.status(206).send('Basket updated successfully ');
+          }throw new Error('Product not found');
+        } catch (error) {
+          return res.status(500).send(error.message);
+    }
+
+    async getKategorii(req, res) {
+        const {id} = req.params
+        const kategorii = await Kategorii.findAll(
+      
+        )
+        return res.json(kategorii)
+    }
 
 
 
@@ -238,8 +258,8 @@ class deviceController {
     }
 
     async creategetO_sebe_info(req, res) {
-        const {title,description,oSebeId} = req.body
-        const basketDevice = await O_sebe_info.create({title,description,oSebeId})
+     
+        const basketDevice = await O_sebe_info.create({})
         return res.json(basketDevice)
     }
     async delO_sebe_info(req, res) {
@@ -335,15 +355,8 @@ class deviceController {
         return res.json(kategorii)
     }
     async createUslugi(req, res) {
-        const {svg,name,description} = req.body
-
+        const basketDevice = await Uslugi.create({})
         
-            const {svg1} = req.files
-            let fileName = uuid.v4() + ".svg"
-            svg1.mv(path.resolve(__dirname, '..', 'static', fileName))
-
-
-        const basketDevice = await Uslugi.create({svg:fileName,name,description})
         return res.json(basketDevice)
     }
 
@@ -397,11 +410,15 @@ class deviceController {
         )
         return res.json(kategorii)
     }
+
+
     async createUslugi_price(req, res) {
-        const { name,price,uslugiId,UslugiPriceId} = req.body
-        const basketDevice = await Uslugi_price.create({name,price,uslugiId,UslugiPriceId})
+        const {UslugiPriceId,uslugiId} = req.body
+        const basketDevice = await Uslugi_price.create({UslugiPriceId,uslugiId})
         return res.json(basketDevice)
     }
+
+
     async delUslugi_price(req, res) {
         try {
           const { id } = req.params;
@@ -505,8 +522,8 @@ class deviceController {
         return res.json(kategorii)
     }
     async createKomplex_predl_info(req, res) {
-        const {name} = req.body
-        const basketDevice = await Komplex_predl_info.create({name})
+        const komplexPredlId = 1
+        const basketDevice = await Komplex_predl_info.create({komplexPredlId})
         return res.json(basketDevice)
     }
 
@@ -558,8 +575,8 @@ class deviceController {
         return res.json(kategorii)
     }
     async createKomplex_predl_info_desc(req, res) {
-        const {description,komplexPredlInfoId} = req.body
-        const basketDevice = await Komplex_predl_info_desc.create({description,komplexPredlInfoId})
+        const {komplexPredlInfoId} = req.body
+        const basketDevice = await Komplex_predl_info_desc.create({komplexPredlInfoId})
         return res.json(basketDevice)
     }
   async delKomplex_predl_info_desc(req, res) {
@@ -671,8 +688,9 @@ class deviceController {
     }
 
     async createActii_info(req, res) {
-        const {name,description,actiiId} = req.body
-        const basketDevice = await Actii_info.create({name,description,actiiId})
+ 
+        const  actiiId = 1
+        const basketDevice = await Actii_info.create({actiiId})
         return res.json(basketDevice)
     }
 
@@ -785,8 +803,8 @@ class deviceController {
         return res.json(kategorii)
     }
     async createOtzivi_info(req, res) {
-        const {name,description,actiiId} = req.body
-        const basketDevice = await Otzivi_info.create({name,description,actiiId})
+        const otziviId =1
+        const basketDevice = await Otzivi_info.create({otziviId})
         return res.json(basketDevice)
     }
     async delOtzivi_info(req, res) {
@@ -835,6 +853,31 @@ class deviceController {
         } catch (error) {
           return res.status(500).send(error.message);
     }
+
+
+
+
+
+    async putUsl (req, res) {
+      const id = 1
+      const basket =  await Kontacts.update(
+      {
+        adress:req.body.adress,
+        uslugi:req.body.uslugi,
+      },
+      {
+          where :{id}
+      }
+      )
+      if (basket) {
+          return res.status(206).send('Basket updated successfully ');
+        }throw new Error('Product not found');
+      } catch (error) {
+        return res.status(500).send(error.message);
+  }
+
+
+
     async putVizit1 (req, res) {
         const id = 1
 
@@ -930,6 +973,49 @@ class deviceController {
         } catch (error) {
           return res.status(500).send(error.message);
     }
+
+    async putPhone (req, res) {
+      const id = req.body.id
+
+
+      const basket =  await Kontacts_phone.update(
+      {
+          phone:req.body.phone,
+      },
+      {
+          where :{id}
+      }
+      )
+      if (basket) {
+          return res.status(206).send('Basket updated successfully ');
+        }throw new Error('Product not found');
+      } catch (error) {
+        return res.status(500).send(error.message);
+  }
+  async crteatePhone(req, res) {
+    const kontactId =1
+    const basketDevice = await Kontacts_phone.create({kontactId})
+    return res.json(basketDevice)
+}
+
+async delPhone(req, res) {
+  try {
+    const { id } = req.params;
+
+    const deletedProduct = await Kontacts_phone.destroy({
+      where: { id: id },
+    });
+
+    if (deletedProduct) {
+      return res.status(204).send('Product deleted successfully ');
+    }
+
+    throw new Error('Product not found');
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
     async getSertificats_info (req, res) {
         const {id} = req.params
         const kategorii = await Sertificats_info.findAll(
@@ -945,8 +1031,8 @@ class deviceController {
     }
 
     async createSertificats_info(req, res) {
-        const {img,sertificatId} = req.body
-        const basketDevice = await Sertificats_info.create({img,sertificatId})
+        const sertificatId =1
+        const basketDevice = await Sertificats_info.create({sertificatId})
         return res.json(basketDevice)
     }
 
@@ -972,7 +1058,7 @@ class deviceController {
 
 
     async putKontacts(req, res) {
-        const {id} = req.params
+        const id = req.body.id
         const basket =  await  Kontacts.update(
         {
             name:req.body.name,
@@ -989,16 +1075,8 @@ class deviceController {
           return res.status(500).send(error.message);
     }
     async getKontacts (req, res) {
-        const {id} = req.params
-        const kategorii = await Kontacts.findAll(
-            {
-                
-                where :
-                {
-                     id
-                }
-            }   
-        )
+
+        const kategorii = await Kontacts.findAll()
         return res.json(kategorii)
     }
     async putKontacts_phone (req, res) {
@@ -1031,8 +1109,8 @@ class deviceController {
         return res.json(kategorii)
     }
     async createKontacts_phone(req, res) {
-        const {phone,kontactId} = req.body
-        const basketDevice = await Kontacts_phone.create({phone,kontactId})
+        const kontactId = 1
+        const basketDevice = await Kontacts_phone.create({kontactId})
         return res.json(basketDevice)
     }
     async delKontacts_phone(req, res) {
